@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block content %}
+    <br>
+    <div class="container">
+        <form action="" method="POST">
+            <h1 class="text-center">Add Stock</h1>
+            {% csrf_token %}
+            {{ form | crispy }}
+            </h1>
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+    </div>
+    {% endblock %}
+    
+</body>
+</html>

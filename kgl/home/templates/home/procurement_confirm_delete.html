@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Confirm Deletion</h2>
+    <p>Are you sure you want to delete the procurement record for <strong>{{ procurement.produce }}</strong> dated <strong>{{ procurement.date }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm" style="background-color: maroon; color: aliceblue;">Yes, Delete</button>
+        <a href="{% url 'procurement_list' %}" class="btn btn-sm" style="background-color: maroon; color: aliceblue;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

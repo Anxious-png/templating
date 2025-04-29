@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Procurement Records</h2>
+    <a href="{% url 'procurement_create' %}" class="btn mb-3" style="background-color: maroon; color: aliceblue;">Add New Procurement</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Produce</th>
+                <th>Tonnage (kgs)</th>
+                <th>Cost (UGX)</th>
+                <th>Dealer Name</th>
+                <th>Branch</th>
+                <th>Contact</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for procurement in procurements %}
+            <tr>
+                <td>{{ procurement.produce }}</td>
+                <td>{{ procurement.tonnage_kgs }}</td>
+                <td>{{ procurement.costUgx }}</td>
+                <td>{{ procurement.dealername }}</td>
+                <td>{{ procurement.branch }}</td>
+                <td>{{ procurement.contact }}</td>
+                <td>{{ procurement.date }}</td>
+                <td>{{ procurement.time }}</td>
+                <td>
+                    <a href="{% url 'procurement_edit' procurement.id %}" class="btn btn-sm" style="background-color: maroon; color:aliceblue">Edit</a>
+                    <a href="{% url 'procurement_delete' procurement.id %}" class="btn btn-sm" style="background-color: maroon; color: aliceblue;">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9" class="text-center">No procurement records found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

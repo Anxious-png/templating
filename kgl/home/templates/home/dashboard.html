@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manager Dashboard{% endblock %}
+
+{% block content %}
+<style>
+    /* Inventory Page Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url(/kgl/home/static/images/img2.jpg);
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Section */
+.inventory-header {
+    text-align: center;
+    padding: 30px 20px;
+    background-color: firebrick;
+    color: white;
+}
+
+.inventory-header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+.inventory-header p {
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+
+/* Filters Section */
+.filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.filters select,
+.filters input {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 220px;
+}
+
+/* Produce Cards Container */
+.produce-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+    padding: 20px;
+    background-image: url(/static/images/img2.png/);
+}
+
+/* Individual Produce Card */
+.produce-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px); /* frosted glass effect */
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    color: #9a3a3a;
+    border-radius: 12px;
+    width: 300px;
+    padding: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    min-height: 300px;
+}
+
+.produce-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Card Header */
+.produce-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.produce-header h2 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.produce-type {
+    font-size: 0.9rem;
+    color: #777;
+    background: #eef2f7;
+    padding: 5px 10px;
+    border-radius: 12px;
+}
+
+/* Price Section */
+.produce-price {
+    margin-bottom: 15px;
+}
+
+.price-label {
+    font-weight: 600;
+    color: #555;
+}
+
+.price-value {
+    color: #0e120f;
+    font-size: 1.2rem;
+    margin-left: 5px;
+}
+
+/* Stock Section */
+.stock-container {
+    margin-top: 10px;
+}
+
+.stock-container h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.branch-stocks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.branch-stock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f2f2f2;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.branch-name {
+    font-weight: 600;
+    color: #060505;
+}
+
+.stock-amount {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Highlight low stock */
+.low-stock {
+    color: #f1cac7;
+    background-color: #8e4242;
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+</style>
+<div class="container-fluid" style="background-color: c; min-height: 100vh;">
+    <div class="row">
+
+        <!-- Sidebar -->
+        <nav class="col-md-2 d-none d-md-block bg-dark sidebar shadow-sm vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                   
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" href="{% url 'allstock' %}">📊 Cash Sale</a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" href="{% url 'credit_list' %}">💳Credit Sales</a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" href="{% url 'procurement_list' %}">Procurement</a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a class="nav-link text-white" href="{% url 'receipt' %}">🧾Receipt</a>
+                    </li>
+                    <li class="nav-item mt-4">
+                        <a class="nav-link text-danger" href="">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-4">
+            <h2 class="mb-4 text-white">Welcome, Manager</h2>
+
+            
+        <div class="produce-container">
+            {% for produce, branch_stock in produce_stock.items %}
+            <div class="produce-card" data-type="{{ produce.produce_type }}">
+                <div class="produce-header">
+                    <h2>{{ produce.name }}</h2>
+                    <span class="produce-type">{{ produce.produce_type }}</span>
+                </div>
+                <div class="produce-price">
+                    <span class="price-label">Price:</span>
+                    <span class="price-value">{{ produce.price_per_kg }} per kg</span>
+                </div>
+                <div class="stock-container">
+                    <h3>Available Stock</h3>
+                    <div class="branch-stocks">
+                        {% for stock in branch_stock %}
+                        <div class="branch-stock">
+                            <div class="branch-name">{{ stock.branch.name }}</div>
+                            <div class="stock-amount {% if stock.quantity < 10 %}low-stock{% endif %}"></div>
+                            <div class="stock-amount {% if stock.quantity < 10 %}low-stock{% endif %}">
+                                {{ stock.quantity }} kg
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        </main>
+        
+       
+        
+        
+    </div>
+</div>
+{% endblock %}
