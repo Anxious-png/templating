@@ -1,0 +1,209 @@
+{% load static %}
+
+{% block title %}Produce Inventory{% endblock %}
+
+{% block content %}
+<style>
+    /* Inventory Page Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url(/kgl/home/static/images/img2.jpg);
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Section */
+.inventory-header {
+    text-align: center;
+    padding: 30px 20px;
+    background-color: firebrick;
+    color: white;
+}
+
+.inventory-header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+.inventory-header p {
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+
+/* Filters Section */
+.filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.filters select,
+.filters input {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 220px;
+}
+
+/* Produce Cards Container */
+.produce-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+    padding: 20px;
+    background-image: url(/static/images/img2.png/);
+}
+
+/* Individual Produce Card */
+.produce-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    width: 300px;
+    padding: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.produce-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Card Header */
+.produce-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.produce-header h2 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.produce-type {
+    font-size: 0.9rem;
+    color: #777;
+    background: #eef2f7;
+    padding: 5px 10px;
+    border-radius: 12px;
+}
+
+/* Price Section */
+.produce-price {
+    margin-bottom: 15px;
+}
+
+.price-label {
+    font-weight: 600;
+    color: #555;
+}
+
+.price-value {
+    color: #28a745;
+    font-size: 1.2rem;
+    margin-left: 5px;
+}
+
+/* Stock Section */
+.stock-container {
+    margin-top: 10px;
+}
+
+.stock-container h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.branch-stocks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.branch-stock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f2f2f2;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.branch-name {
+    font-weight: 600;
+    color: #555;
+}
+
+.stock-amount {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Highlight low stock */
+.low-stock {
+    color: #d93025;
+    background-color: #ffe6e6;
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+</style>
+<div class="inventory-header">
+    <img src="/static/images/logo.png/" width="80" height="60" alt="logo.png">
+    <h1>Karibu Grocery Limited</h1>
+    <p>View stock levels across all branches</p>
+</div>
+
+<div class="filters">
+    <select id="type-filter">
+        <option value="all">All Types</option>
+        {% for produce, stocks in produce_stock.items %}
+            {% if forloop.first or previous_type != produce.produce_type %}
+                <option value="{{ produce.produce_type }}">{{ produce.produce_type }}</option>
+            {% endif %}
+            {% with produce.produce_type as previous_type %}{% endwith %}
+        {% endfor %}
+    </select>
+    
+    <input type="text" id="search-input" placeholder="Search produce...">
+</div>
+
+<div class="produce-container" style="background-image: url(/static/images/img2.jpg/);">
+    {% for produce, branch_stock in produce_stock.items %}
+    <div class="produce-card" data-type="{{ produce.produce_type }}">
+        <div class="produce-header">
+            <h2>{{ produce.name }}</h2>
+            <span class="produce-type">{{ produce.produce_type }}</span>
+        </div>
+        <div class="produce-price">
+            <span class="price-label">Price:</span>
+            <span class="price-value">{{ produce.price_per_kg }} per kg</span>
+        </div>
+        <div class="stock-container">
+            <h3>Available Stock</h3>
+            <div class="branch-stocks">
+                {% for stock in branch_stock %}
+                <div class="branch-stock">
+                    <div class="branch-name">{{ stock.branch.name }}</div>
+                    <div class="stock-amount {% if stock.quantity < 10 %}low-stock{% endif %}"></div>
+                    <div class="stock-amount {% if stock.quantity < 10 %}low-stock{% endif %}">
+                        {{ stock.quantity }} kg
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+

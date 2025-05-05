@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Credit Sales List</h2>
+    <a href="{% url 'add_credit_sale' %}" class="btn mb-3" style="background-color: maroon; color: aliceblue;">Add New Credit Sale</a>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Produce</th>
+                <th>Buyer Name</th>
+                <th>NIN</th>
+                <th>Quantity</th>
+                <th>Total Amount Due</th>
+                <th>Sales Agent</th>
+                <th>Due Date</th>
+                <th>Branch</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in credits %}
+            <tr>
+                <td>{{ sale.produce }}</td>
+                <td>{{ sale.buyer_name }}</td>
+                <td>{{ sale.national_id }}</td>
+                <td>{{ sale.tonnage_kgs }}</td>
+                <td>{{ sale.amount_due_ugx }}</td>
+                <td>{{ sale.sales_agent }}</td>
+                <td>{{ sale.due_date }}</td>
+                <td>{{ sale.branch }}</td>
+                <td>
+                    <a href="{% url 'credit_detail' sale.pk %}" class="btn btn-sm" style="background-color: maroon; color: aliceblue;">View</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9" class="text-center">No credit sales found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="card-container">
+    <div class="card">
+      <div class="card-header">
+        <h2>Confirm Deletion</h2>
+      </div>
+      <div class="card-body">
+        <p>Are you sure you want to delete the stock item: <strong>{{ object.produce }}</strong>?</p>
+      </div>
+      <div class="card-footer">
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm" style="background-color: maroon; color: #dee2e6;">Yes, Delete</button>
+          <a href="{% url 'stock_detail' object.id %}" class="btn btn-back" style="background-color: maroon; color: #dee2e6;">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+<style>
+    .card-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header h2 {
+  margin-bottom: 1rem;
+  color: #343a40;
+}
+
+.card-body p {
+  font-size: 1rem;
+  color: #495057;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn-delete {
+  background-color: #dc3545;
+}
+
+.btn-back {
+  background-color: #6c757d;
+}
+
+</style>

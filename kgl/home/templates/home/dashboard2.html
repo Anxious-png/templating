@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow-x: hidden;
+  }
+  
+  /* Remove padding from main content area */
+  main {
+      padding: 0 !important;
+  }
+  
+  /* Full-width sidebar that extends to the edge */
+  .sidebar {
+      margin-left: -50px; 
+      padding-left: 50px;
+      width: 300px; 
+      height: 700px;
+  }
+  
+  /* Fix container padding */
+  .main-content-wrapper {
+      padding-left: 0;
+      margin-left: 0;
+  }
+</style>
+
+<div class="d-flex" >
+    <!-- Sidebar -->
+    <div class="sidebar" style="background-color: black; color: white;">
+        <h4 class="text-center mb-4 pt-4">Sales Menu</h4>
+        <ul class="nav flex-column">
+            <li class="nav-item mb-3">
+                <a href="{% url 'allstock' %}" class="nav-link text-white">📊 Record Sales</a>
+            </li>
+            <li class="nav-item mb-3">
+                <a href="{% url 'receipt' %}" class="nav-link text-white">🧾 Receipts</a>
+            </li>
+            <li class="nav-item mb-3">
+                <a href="{% url 'credit_list' %}" class="nav-link text-white">💳 Credit Sales</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-grow-1 p-4" >
+        <h2>Welcome, {{ user.username }} - Sales Agent</h2>
+        <p class="mb-4">Manage your sales activities efficiently.</p>
+
+        <div class="row g-4">
+            <!-- Card 1 -->
+            <div class="col-md-4">
+                <div class="card text-white bg-danger shadow" style="border-radius: 15px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Record a Sale</h5>
+                        <p class="card-text">Quickly log a new sale transaction.</p>
+                        <a href="{% url 'allstock' %}" class="btn btn-light">Record</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="col-md-4">
+                <div class="card text-white bg-dark shadow" style="border-radius: 15px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Receipts</h5>
+                        <p class="card-text">View and manage all receipts.</p>
+                        <a href="{% url 'receipt' %}" class="btn btn-danger">View Receipts</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="col-md-4">
+                <div class="card bg-white shadow" style="border-radius: 15px;">
+                    <div class="card-body text-dark">
+                        <h5 class="card-title">Credit Sales</h5>
+                        <p class="card-text">Manage customers' credit purchases.</p>
+                        <a href="{% url 'credit_list' %}" class="btn btn-danger">Manage Credit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extra content to see scroll -->
+        <div style="height: 600px;"></div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container-fluid py-4">
+  <h1 class="display-5 mb-4 text-white">Director's Dashboard</h1>
+
+  <!-- Key Metrics Cards -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-3">
+      <div class="card h-100 text-white" style="background-color: maroon;">
+        <div class="card-body">
+          <h5 class="card-title">Total Sales</h5>
+          <h2 class="card-text display-6">UGX {{ total_sales }}</h2>
+        </div>
+        <div class="card-footer border-0" style="background-color: maroon;">
+          <a href="#" class="text-white text-decoration-none">View Sales →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card h-100 text-white" style="background-color: maroon;">
+        <div class="card-body">
+          <h5 class="card-title">Total Tonnage</h5>
+          <h2 class="card-text display-6">{{ total_tonnage }} Kgs</h2>
+        </div>
+        <div class="card-footer border-0" style="background-color: maroon;">
+          <a href="#" class="text-white text-decoration-none">View Details →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card h-100 text-white" style="background-color: maroon;">
+        <div class="card-body">
+          <h5 class="card-title">Total Credit</h5>
+          <h2 class="card-text display-6">UGX {{ total_credit }}</h2>
+        </div>
+        <div class="card-footer border-0" style="background-color: maroon;">
+          <a href="#" class="text-white text-decoration-none">View Credits →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card h-100 text-white" style="background-color: maroon;">
+        <div class="card-body">
+          <h5 class="card-title">Available Stock</h5>
+          <h2 class="card-text display-6">{{ available_stock }} Kgs</h2>
+        </div>
+        <div class="card-footer border-0" style="background-color: maroon;">
+          <a href="#" class="text-white text-decoration-none">View Inventory →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body d-flex flex-wrap gap-2">
+          <a href="#" class="btn btn-sm" style="background-color: black; color: aliceblue;">
+            <i class="bi bi-plus-circle"></i> Sales
+          </a>
+          <a href="#" class="btn btn-sm" style="background-color: maroon; color: aliceblue;">
+            <i class="bi bi-truck"></i> Procurements
+          </a>
+          <a href="#" class="btn btn-sm" style="background-color: black; color: aliceblue;">
+            <i class="bi bi-credit-card"></i> Credit Sales
+          </a>
+          <a href="#" class="btn btn-sm" style="background-color: maroon; color: aliceblue;">
+            <i class="bi bi-file-earmark-text"></i> Reports
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="row g-4">
+    <div class="col-md-8">
+      <div class="card h-100">
+        <div class="card-header bg-white">
+          <h5 class="card-title mb-0">Monthly Sales</h5>
+        </div>
+        <div class="card-body">
+          {{ sales_chart|safe }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-header bg-white">
+          <h5 class="card-title mb-0">Sales by Branch</h5>
+        </div>
+        <div class="card-body">
+          {{ branch_chart|safe }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Transactions -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">Recent Transactions</h5>
+          <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Branch</th>
+                  <th>Product</th>
+                  <th>Quantity (Kgs)</th>
+                  <th>Amount (UGX)</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for sale in recent_sales %}
+                <tr>
+                  <td>{{ sale.date }}</td>
+                  <td>{{ sale.branch }}</td>
+                  <td>{{ sale.product }}</td>
+                  <td>{{ sale.quantity }}</td>
+                  <td>{{ sale.amount_paid_ugx }}</td>
+                  <td>
+                    <a href="#" class="btn btn-sm btn-outline-primary">View</a>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center">No recent sales found</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card-container">
+    <div class="card">
+      <div class="card-header">
+        <h2>Stock Item Details</h2>
+      </div>
+      <div class="card-body">
+        <p><strong>Produce:</strong> {{ stock.produce }}</p>
+        <p><strong>Branch:</strong> {{ stock.branch }}</p>
+        <p><strong>Price per Kg:</strong> UGX {{ stock.price }}</p>
+        <p><strong>Tonnage (Kgs):</strong> {{ stock.tonnage_kgs }}</p>
+      </div>
+      <div class="card-footer">
+        <a href="{% url 'addstock' stock.id %}" class="btn btn-sm" style="background-color: maroon;color: aliceblue;">Edit</a>
+        <a href="{% url 'stock_delete' stock.id %}" class="btn btn-sm" style="background-color: maroon; color: aliceblue;">Delete</a> <!-- Hook this to a delete view later -->
+        <a href="{% url 'allstock' %}" class="btn btn-sm" style="background-color: maroon; color: aliceblue;">Back</a>
+      </div>
+    </div>
+  </div>
+                    <!-- Centered Button at Bottom -->
+                    <div class="text-center mt-4">
+                        <a href="{% url 'issue_item' stock.id %}" class="btn btn-lg" style="background-color: maroon; color: aliceblue;">Sell Item</a>
+                    
+{% endblock %}

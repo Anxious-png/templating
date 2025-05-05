@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow-sm rounded border-0">
+    <div class="card-header bg-primary text-white">
+      <h3>Credit Sale Detail</h3>
+    </div>
+    <div class="card-body">
+      <p><strong>Produce:</strong> {{ credit_sale.produce }}</p>
+      <p><strong>Buyer Name:</strong> {{ credit_sale.buyer_name }}</p>
+      <p><strong>NIN:</strong> {{ credit_sale.national_id }}</p>
+      <p><strong>Quantity:</strong> {{ credit_sale.tonnage_kgs }} Kgs</p>
+      <p><strong>Amount Due:</strong> UGX {{ credit_sale.amount_due_ugx }}</p>
+      <p><strong>Sales Agent:</strong> {{ credit_sale.sales_agent }}</p>
+      <p><strong>Due Date:</strong> {{ credit_sale.due_date }}</p>
+    </div>
+    <div class="card-footer text-end">
+      <a href="{% url 'credit_list' %}" class="btn btn-secondary">Back to List</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+
+
+
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allstock</title>
+    <link rel="stylesheet" href="{% static '/styles/app.css' %}">
+</head>
+<body>
+    
+    {% block content %}
+    <div class="table-container">
+        <h1>AVAILABLE STOCK</h1>
+        <table border ="1">
+               <thead>
+                  <tr>
+                    <th>Produce</th>
+                    <th>Branch</th>
+                    <th>Price</th>
+                    <th>Tonnage_kgs</th>
+                    <th>Action</th>
+                  </tr>
+        
+            </thead>
+        <tbody>
+            {% for stock in stocks %}
+            <tr>
+                <td>{{ stock.produce }}</td>
+                <td>{{ stock.branch }}</td>
+                <td>{{ stock.price }}</td>
+                <td>Ugx.{{ stock.tonnage_kgs }}</td>
+                <td>
+                    <a href="{% url 'stock_detail' stock.id %}"class="btn btn-primary">Checkout</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+        </table>
+    </div>
+
+    {% endblock %} 
+    
+    
+    
+</body>
+</html>
+
+
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Welcome, {{ user.username }}</h2>
+  <p>Managers Dashboard.</p>
+
+  <ul>
+    <li><a href="">📊Record Sales</a></li>
+    <li><a href="">Record New Sale</a></li>
+    <li><a href="">🧾 Receipts</a></li>
+    <li><a href="">💳 Credit Sales</a></li>
+    <li><a href="">📦 Stock Levels</a></li>
+    <li><a href="">🛒 Procurements</a></li>
+    <li><a href="">🚪 Logout</a></li>
+  </ul>
+{% endblock %}
+
+def owner(request):
+    total_sales = Sale.objects.aggregate(total=Sum('amount_paid_ugx'))['total'] or 0
+    total_tonnage = Sale.objects.aggregate(total=Sum('quantity'))['total'] or 0
+    total_credit = CreditSale.objects.filter(is_paid=False).aggregate(total=Sum('amount_due_ugx'))['total'] or 0
+    available_stock = Stock.objects.aggregate(total=Sum('tonnage_kgs'))['total'] or 0
+
+    # Sales Trends
+    monthly_sales = (
+        Sale.objects
+        .values('date__month')
+        .annotate(total=Sum('amount_paid_ugx'))
+        .order_by('date__month')
+    )
+
+    # Branch-wise Sales
+    branch_sales = (
+        Sale.objects
+        .values('branch')
+        .annotate(total=Sum('amount_paid_ugx'))
+        .order_by('branch')
+    )
+
+    # Credit Sales Status
+    outstanding_credits = CreditSale.objects.filter(is_paid=False)
+
+    # Stock Summary
+    stock_by_produce = (
+        Stock.objects
+        .values('produce__name')
+        .annotate(total=Sum('tonnage_kgs'))
+        .order_by('produce__name')
+    )
+
+    stock_by_branch = (
+        Stock.objects
+        .values('branch')
+        .annotate(total=Sum('tonnage_kgs'))
+        .order_by('branch')
+    )
+
+    context = {
+        'total_sales': total_sales,
+        'total_tonnage': total_tonnage,
+        'total_credit': total_credit,
+        'available_stock': available_stock,
+        'monthly_sales': monthly_sales,
+        'branch_sales': branch_sales,
+        'outstanding_credits': outstanding_credits,
+        'stock_by_produce': stock_by_produce,
+        'stock_by_branch': stock_by_branch,
+    }
+    return render(request, 'home/dashboard3.html', context)
+
+
+<div id="dashbord3">
+    {% extends 'base.html' %}
+
+{% block content %}
+<h1>Director's Dashboard</h1>
+
+<div class="kpi-container">
+    <div class="kpi">
+        <h3>Total Sales (UGX)</h3>
+        <p>{{ total_sales }}</p>
+    </div>
+    <div class="kpi">
+        <h3>Total Tonnage Sold (Kgs)</h3>
+        <p>{{ total_tonnage }}</p>
+    </div>
+    <div class="kpi">
+        <h3>Total Credit Outstanding (UGX)</h3>
+        <p>{{ total_credit }}</p>
+    </div>
+    <div class="kpi">
+        <h3>Available Stock (Kgs)</h3>
+        <p>{{ available_stock }}</p>
+    </div>
+</div>
+
+<h2>Monthly Sales</h2>
+<canvas id="monthlySalesChart"></canvas>
+
+<h2>Branch-wise Sales</h2>
+<canvas id="branchSalesChart"></canvas>
+
+<h2>Outstanding Credits</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Buyer</th>
+            <th>Amount Due (UGX)</th>
+            <th>Due Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for credit in outstanding_credits %}
+        <tr>
+            <td>{{ credit.buyer_name }}</td>
+            <td>{{ credit.amount_due_ugx }}</td>
+            <td>{{ credit.due_date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Stock by Produce</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Produce</th>
+            <th>Available Stock (Kgs)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in stock_by_produce %}
+        <tr>
+            <td>{{ item.produce__name }}</td>
+            <td>{{ item.total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Stock by Branch</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Branch</th>
+           
+            <th>Available Stock (Kgs)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in stock_by_branch %}
+        <tr>
+            <td>{{ item.branch }}</td>
+          
+            <td>{{ item.total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+
+</div>
