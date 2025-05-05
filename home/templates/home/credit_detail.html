@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Credit Detail{% endblock %}
+
+{% block content %}
+<style>
+    .glassy-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 15px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        padding: 30px;
+        color: #000;
+    }
+    .maroon-btn {
+        background-color:  rgb(16, 168, 120);
+        color: white;
+        border: none;
+    }
+    .maroon-btn:hover {
+        background-color:  rgb(16, 168, 120);
+        color: white;
+    }
+</style>
+
+<div class="container mt-4">
+  
+    <h2 class="mb-4 text-center">Credit Sale Detail</h2>
+    <button onclick="history.back()" class="btn btn-secondary" style="background-color:  rgb(16, 168, 120); color: white;" >Back</button>
+
+    <div class="glassy-card">
+        <div class="row">
+            <!-- Left Column: Credit Details -->
+            <div style="flex: 1; min-width: 300px; max-width: 500px; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); border-radius: 15px; padding: 20px;" >
+                <h4>{{ credit_sale.buyer_name }}</h4>
+                <p><strong>Produce:</strong> {{ credit_sale.produce.name }}</p>
+                <p><strong>National ID:</strong> {{ credit_sale.national_id }}</p>
+                <p><strong>Location:</strong> {{ credit_sale.location }}</p>
+                <p><strong>Contact:</strong> {{ credit_sale.contact }}</p>
+                <p><strong>Branch:</strong> {{ credit_sale.branch }}</p>
+                <p><strong>Amount Due:</strong> {{ credit_sale.amount_due_ugx }} UGX</p>
+                <p><strong>Paid So Far:</strong> {{ credit_sale.total_paid }} UGX</p>
+                <p><strong>Balance:</strong> {{ credit_sale.balance_due }} UGX</p>
+                <p><strong>Status:</strong> 
+                    {% if credit_sale.is_paid %}
+                        <span class="badge bg-success">Paid</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    {% endif %}
+                </p>
+            </div>
+            {% if user.is_manager or user.is_salesagent %}
+
+            <!-- Right Column: Payment Form -->
+            {% if not credit_sale.is_paid %}
+            <div style="flex: 1; min-width: 300px; max-width: 500px; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); border-radius: 15px; padding: 20px;">
+                <h5>Add Payment</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn maroon-btn mt-2 w-100" style="padding: 10px 20px; border:none; border: none; border-radius: 8px;">Submit Payment</button>
+                </form>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <h5 class="mb-3">Payment History</h5>
+    <ul class="list-group mb-4">
+        {% for payment in payments %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ payment.amount_paid }} UGX on {{ payment.payment_date }}
+            <span class="text-muted small">Received by {{ payment.received_by }}</span>
+        </li>
+        {% empty %}
+        <li class="list-group-item">No payments yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

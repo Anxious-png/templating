@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="javascript:history.back()" class="btn btn-success" style="background-color: rgb(16, 168, 120);">&larr; Back</a>
+        <h2 class="text-center flex-grow-1">ALL SALES</h2>
+        <a href="{% url 'addsales' 0 %}" class="btn btn-success" style="background-color: rgb(16, 168, 120);">+ Add New Sale</a>
+    </div>
+
+    <div class="table-container">
+        <table class="stock-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Produce</th>
+                    <th>Quantity (kg)</th>
+                    <th>Price per kg</th>
+                    <th>Total (UGX)</th>
+                    <th>Amount Paid (UGX)</th>
+                    <th>Change</th>
+                    <th>Buyer</th>
+                    <th>Branch</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in sales %}
+                <tr>
+                    <td>{{ sale.date }}</td>
+                    <td>{{ sale.time }}</td>
+                    <td>{{ sale.produce }}</td>
+                    <td>{{ sale.quantity }}</td>
+                    <td>{{ sale.price }}</td>
+                    <td>{{ sale.get_total }}</td>
+                    <td>{{ sale.amount_paid_ugx }}</td>
+                    <td>{{ sale.get_change }}</td>
+                    <td>{{ sale.buyer_name }}</td>
+                    <td>{{ sale.branch }}</td>
+                    <td>
+                        <a href="{% url 'sale_detail' sale.id %}" class="checkout-btn">Details</a>
+                        <a href="{% url 'addsales' sale.id %}" class="checkout-btn">Add Sale</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="11" class="text-center">No sales records found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .table-container {
+        width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+    
+    .stock-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stock-table th, .stock-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .stock-table thead {
+        background-color: rgb(16, 168, 120);
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+    
+    .stock-table tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+    
+    .checkout-btn {
+        background-color: rgb(16, 168, 120);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 4px;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+    
+    .checkout-btn:hover {
+        background-color: #0e8e66;
+        color: white;
+    }
+
+    /* Make the action buttons stack vertically on smaller screens */
+    @media (max-width: 768px) {
+        .checkout-btn {
+            display: block;
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}

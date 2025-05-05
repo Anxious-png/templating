@@ -1,0 +1,152 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static '/styles/app.css' %}">
+    <style>
+        /* Base styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, green, rgb(16, 168, 120));
+    min-height: 100vh;
+  }
+  
+  /* Main container styling */
+  .containerlogin {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 0;
+  }
+  
+  /* Glass effect container */
+  .glass {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px 16px 0 0;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Form container styling */
+  .containerlogin > .container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 0 0 16px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: none;
+    padding: 30px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Title styling */
+  h1 {
+    color: #e4d2d7;
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Input fields styling */
+  .form-control {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 12px;
+    color: #333;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+  }
+  
+  .form-control:focus {
+    background: rgba(255, 255, 255, 0.25);
+    border-color:  rgb(16, 168, 120);
+    box-shadow: 0 0 0 0.2rem rgba(128, 0, 32, 0.25);
+  }
+  
+  /* Label styling */
+  label {
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  /* Button styling */
+  .btn-info.btn_danger {
+    background-color: aliceblue;
+    border-color:  rgb(16, 168, 120) ;
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-info.btn_danger:hover {
+    background-color: green ;
+    border-color:  rgb(16, 168, 120);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .btn-info.btn_danger:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Crispy forms adjustments */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .containerlogin {
+      margin: 1rem;
+      max-width: 100%;
+    }
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.containerlogin {
+  animation: fadeIn 0.6s ease forwards;
+}
+    </style>
+    
+</head>
+<body>
+    {% block content %}
+    <br><br>
+    <div class="body container-fluid containerlogin">
+        <div class=" container container-fluid glass">
+          <img src="/static/images/logo.png/" width="50px" height="50px" alt="logo.png">
+            <h1 class="text-white text-center"style="color: #800020;">LOGIN</h1><br>
+        </div>
+        <div class="container container-fluid ">
+            <form action="" method="POST" >
+                {% csrf_token %}
+                {{ form | crispy }}
+                <br><br>
+            <input type="submit" value="Login" class="btn btn-info btn_danger btn-lg btn-block" style="background-color: aquamarine;">
+            </form>
+        </div>
+    </div>
+    {% endblock %}
+    
+</body>
+</html>

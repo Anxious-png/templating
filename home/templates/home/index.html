@@ -1,0 +1,121 @@
+{% load static %}
+
+{% block title %}Produce Inventory{% endblock %}
+
+{% block content %}
+<style>
+    /* Inventory Page Styles */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-image: url(/kgl/home/static/images/img2.jpg);
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Section */
+.inventory-header {
+    text-align: center;
+    padding: 30px 20px;
+    background-color:  rgb(16, 168, 120);
+    color: white;
+}
+
+.inventory-header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+.inventory-header p {
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+.slogan {
+  font-style: italic;
+  font-size: 1.2em;
+  color: #f0f0f0;
+}
+
+
+/* Filters Section */
+.filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.filters select,
+.filters input {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 220px;
+}
+
+/* Produce Cards Container */
+
+.card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 35px;
+            padding: 20px;
+        }
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 155px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .card h3 {
+            margin-bottom: 10px;
+        }
+        .card p {
+            margin: 5px 0;
+        }
+
+
+</style>
+<div class="inventory-header">
+    <img src="/static/images/logo.png/" width="80" height="60" alt="logo.png">
+    <h1>Welcome to Karibu Grocery Limited</h1>
+    <p>"Locally Sourced,Community Approved"</p>
+</div>
+
+<!--<div class="filters">
+    <select id="type-filter">
+        <option value="all">All Types</option>
+        {% for produce, stocks in produce_stock.items %}
+            {% if forloop.first or previous_type != produce.produce_type %}
+                <option value="{{ produce.produce_type }}">{{ produce.produce_type }}</option>
+            {% endif %}
+            {% with produce.produce_type as previous_type %}{% endwith %}
+        {% endfor %}
+    </select>
+    
+    <input type="text" id="search-input" placeholder="Search produce...">
+</div>-->
+<div style="margin-bottom: 10px; text-align: right; padding: 10px;"> 
+    <a href="{% url 'login' %}"><button type="submit" class="btn btn-lg" style="background-color: rgb(16, 168, 120); color: black; border-radius: 10%; padding: 15px 20px; font-size: 1.4rem;">Login</button>
+    </div>
+
+</a>
+</div>
+<h1 style="text-align:center;">OUR PRODUCTS</h1>
+<div class="card-container" >
+    {% for product in products %}
+        <div class="card">
+            <img src="{% static 'images/' %}{{ product.name|lower }}.jpg" alt="{{ product.name }}" width="150" height="150">
+            <h3>{{ product.name }}</h3>
+            <p>Type: {{ product.produce_type }}</p>
+            <p>Price : {{ product.price_per_kg }}</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+

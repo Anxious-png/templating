@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Your styles - these will now be scoped within the content area */
+    body { /* Remove this, the base template handles the body */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(to right, #f3f4f6, #e5e7eb);
+        padding: 30px;
+        color: #333;
+    }
+
+    h2 {
+        color: black;
+        margin-top: 40px;
+        text-align: center;
+        font-size: 1.8rem;
+    }
+
+    .back-button {
+        display: inline-block;
+        margin-bottom: 20px;
+        background-color:  rgb(16, 168, 120);
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-size: 1rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .back-button:hover {
+        background-color: gray;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+        margin-top: 20px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        background-color: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(6px);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 600px;
+    }
+
+    th, td {
+        padding: 14px 20px;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    th {
+        background-color:  rgb(16, 168, 120);
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: rgba(240, 240, 240, 0.6);
+    }
+
+    tr:hover {
+        background-color: rgba(224, 242, 255, 0.9);
+    }
+
+    @media (max-width: 768px) {
+        body {
+            padding: 15px;
+        }
+
+        .back-button {
+            font-size: 0.9rem;
+            padding: 8px 16px;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+        }
+
+        table {
+            font-size: 0.9rem;
+            min-width: 500px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        table {
+            font-size: 0.85rem;
+            min-width: 400px;
+        }
+    }
+</style>
+
+<a href="javascript:history.back()" class="back-button">← Back</a>
+
+<h2>Stock Summary</h2>
+<div class="table-wrapper">
+    <table>
+        <tr><th>Branch</th><th>Produce</th><th>Quantity</th><th>Tonnage (kgs)</th></tr>
+        {% for item in stock_summary %}
+            <tr>
+                <td>{{ item.branch }}</td>
+                <td>{{ item.produce__name }}</td>
+                <td>{{ item.total_quantity }}</td>
+                <td>{{ item.total_tonnage }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<h2>Sales Summary</h2>
+<div class="table-wrapper">
+    <table>
+        <tr><th>Branch</th><th>Produce</th><th>Quantity Sold</th><th>Revenue (UGX)</th></tr>
+        {% for sale in sales_summary %}
+            <tr>
+                <td>{{ sale.branch }}</td>
+                <td>{{ sale.produce__name }}</td>
+                <td>{{ sale.total_quantity_sold }}</td>
+                <td>{{ sale.total_revenue }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<h2>Credit Sales Summary</h2>
+<div class="table-wrapper">
+    <table>
+        <tr><th>Branch</th><th>Buyer</th><th>Produce</th><th>Due</th><th>Paid</th><th>Due Date</th></tr>
+        {% for credit in credit_summary %}
+            <tr>
+                <td>{{ credit.branch }}</td>
+                <td>{{ credit.buyer_name }}</td>
+                <td>{{ credit.produce__name }}</td>
+                <td>{{ credit.amount_due_ugx }}</td>
+                <td>{{ credit.is_paid }}</td>
+                <td>{{ credit.due_date }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,358 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Sales Receipts</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .receipt-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .receipt {
+            background-color: white;
+            width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 25px;
+            position: relative;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .receipt::before, .receipt::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: repeating-linear-gradient(
+                45deg,
+                white,
+                white 5px,
+                #f0f0f0 5px,
+                #f0f0f0 10px
+            );
+        }
+        
+        .receipt::before {
+            top: -10px;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .receipt::after {
+            bottom: -10px;
+            border-radius: 0 0 5px 5px;
+        }
+        
+        .receipt-header {
+            text-align: center;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .receipt-logo {
+            width: 60px;
+            height: auto;
+            margin: 0 auto 5px;
+            display: block;
+        }
+        
+        .receipt-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .receipt-business {
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        
+        .receipt-address {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .receipt-contact {
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+        
+        .receipt-info {
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .receipt-customer {
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 12px;
+        }
+        
+        .receipt-customer div {
+            margin-bottom: 3px;
+            width: 100%;
+        }
+        
+        .receipt-items {
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+            padding-bottom: 3px;
+        }
+        
+        .item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 5px;
+            border-bottom: 1px dotted #eee;
+            padding-bottom: 3px;
+        }
+        
+        .receipt-totals {
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+        
+        .grand-total {
+            font-weight: bold;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+            padding-top: 5px;
+            margin-top: 5px;
+        }
+        
+        .receipt-payment {
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #ccc;
+            font-size: 12px;
+        }
+        
+        .payment-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3px;
+        }
+        
+        .receipt-footer {
+            text-align: center;
+            font-size: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .barcode {
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .barcode img {
+            max-width: 90%;
+            height: 40px;
+        }
+        
+        .receipt-date-time {
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        
+        .receipt-id {
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        
+        .receipt-actions {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .receipt-btn {
+            background-color: rgb(16, 168, 120);
+            color: white;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 4px;
+            font-size: 12px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        
+        .receipt-btn:hover {
+            background-color: rgb(14, 148, 106);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .bold {
+            font-weight: bold;
+        }
+        
+        .dotted-separator {
+            border-bottom: 1px dotted #ccc;
+            margin: 5px 0;
+        }
+        
+        .back-btn {
+            background-color: rgb(16, 168, 120);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .back-btn:hover {
+            background-color: rgb(14, 148, 106);
+            color: white;
+        }
+        
+        .alert-count {
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mb-4">
+        <button onclick="history.back()" class="back-btn">Back</button>
+        
+        {% if sales %}
+            <div class="alert-count">Found {{ sales|length }} receipts</div>
+            <div class="receipt-container">
+                {% for sale in sales %}   
+                <div class="receipt">
+                    <div class="receipt-header">
+                        <div class="receipt-title">KARIBU GROCERY LIMITED</div>
+                        <div class="receipt-address"><b>Plot 123, Matugga</b></div>
+                        <div class="receipt-address"><b>Kampala, Uganda</b></div>
+                        <div class="receipt-contact"><b>Tel: +256-700-123456</b></div>
+                        <div class="receipt-date-time"><b>{{ sale.date }} at {{ sale.time }}</b></div>
+                        <div class="receipt-date-time"><b>{{ sale.date }} at {{ sale.time }}</b></div>
+                        <div class="receipt-id">Receipt #:<b>{{ sale.id }}</b></div>
+                        <div class="dotted-separator"></div>
+                        <div class="receipt-title">SALES RECEIPT</div>
+                    </div>
+                    
+                    <div class="receipt-info">
+                        <div class="receipt-customer">
+                            <div><span class="bold"><b>Customer:</span> {{ sale.buyer_name }}</b></div>
+                        </div>
+                    </div>
+                    
+                    <div class="receipt-items">
+                        <div class="item-header">
+                            <span style="width: 40%;">Item</span>
+                            <span style="width: 20%; text-align: right;"><b>Qty</b></span>
+                            <span style="width: 20%; text-align: right;"><b>Price</b></span>
+                            <span style="width: 20%; text-align: right;"><b>Total</b></span>
+                        </div>
+                        <div class="item">
+                            <span style="width: 40%;"><b></b>{{ sale.produce.name }}</b></span>
+                            <span style="width: 20%; text-align: right;"><b>{{ sale.quantity }} kg</b></span>
+                            <span style="width: 20%; text-align: right;"><b>{{ sale.price }}</b></span>
+                            <span style="width: 20%; text-align: right;"><b>{{ sale.get_total }}</b></span>
+                        </div>
+                    </div>
+                    
+                    <div class="receipt-totals">
+                        <div class="total-row">
+                            <span>Subtotal:</span>
+                            <span><b>Ugx {{ sale.get_total }}</b></span>
+                        </div>
+                        <div class="total-row">
+                            <span><b>Tax (0%):</b></span>
+                            <span><b>Ugx 0.00</b></span>
+                        </div>
+                        <div class="total-row grand-total">
+                            <span>TOTAL:</span>
+                            <span><b>Ugx {{ sale.get_total }}</b></span>
+                        </div>
+                    </div>
+                    
+                    <div class="receipt-payment">
+                        <div class="payment-row">
+                            <span class="bold"><b>Amount Paid:</b></span>
+                            <span><b>Ugx {{ sale.amount_paid_ugx }}</b></span>
+                        </div>
+                        <div class="payment-row">
+                            <span class="bold"><b>Change:</b></span>
+                            <span><b>Ugx {{ sale.get_change }}</b></span>
+                        </div>
+                        <div class="payment-row">
+                            <span class="bold"><b>Payment Method:</b></span>
+                            <span>Cash</span>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="receipt-footer">
+                        <div><strong>Thank you for supporting Karibu Grocery!</strong></div>
+                        <div><b>Remember goods once sold are not returnable</b></div>
+                       
+                    </div>
+                    
+                    <div class="receipt-actions">
+                        <a href="{% url 'receipt_detail' sale.id %}" class="receipt-btn">Final Receipt</b></a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-warning">
+                No sales records found! Please make sure there are sales in the database.
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
+{% endblock %}

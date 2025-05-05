@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="glassy-container">
+        <h1>Add Stock</h1>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+    </div>
+</div>
+<style>
+    /* Your styles for the form container - these will now be scoped within the content area */
+    .container {
+        display: flex; /* Consider if you need this here or if Bootstrap's grid can handle it */
+        justify-content: center; /* Consider if you need this here */
+        align-items: center; /* Consider if you need this here */
+        min-height: calc(100vh - 100px); /* This might cause scrolling issues within the content area */
+        width: 100%;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
+    .glassy-container {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgb(16, 168, 120);
+        border-radius: 15px;
+        padding: 30px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 500px; /* Keep this for the form width */
+        margin: auto; /* Keep this to center the form */
+    }
+
+    .form-control {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 5px;
+        border: 1px solid rgb(16, 168, 120);
+        color: rgb(16, 168, 120);
+        padding: 10px;
+        margin-bottom: 15px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .btn-primary {
+        background-color: rgb(16, 168, 120);
+        border: none;
+        color: white;
+        border-radius: 5px;
+        padding: 12px 20px;
+        cursor: pointer;
+        width: 100%;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color:  rgb(16, 168, 120);
+    }
+
+    h1 {
+        color:  rgb(16, 168, 120);
+        text-align: center;
+        margin-bottom: 25px;
+        font-size: 28px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        color:  rgb(16, 168, 120);
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+</style>
+{% endblock %}

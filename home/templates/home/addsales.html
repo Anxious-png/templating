@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Sales Form{% endblock %}
+
+{% block content %}
+<button onclick="history.back()" class="btn btn-secondary">Back</button>
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="card p-4 shadow-sm border-0">
+        <h2 class="mb-4 text-center">New Sale</h2>
+        <form method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
+            {{ salesform|crispy }}
+            <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn btn-lg" style="background-color:  rgb(16, 168, 120); color: aliceblue;">Complete Sale</button>
+                <a href="{% url 'allsales' %}" class="btn btn-lg" style="background-color:  rgb(16, 168, 120); color: aliceblue;">Back to Sales</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

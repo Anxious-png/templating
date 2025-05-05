@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .glassy-table-wrapper {
+        overflow-x: auto;
+        margin-top: 20px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        background-color: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(6px);
+        padding: 10px;
+    }
+
+    .glassy-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 800px;
+    }
+
+    .glassy-table th, .glassy-table td {
+        padding: 14px 20px;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .glassy-table th {
+        background-color: rgb(16, 168, 120);
+        color: white;
+    }
+
+    .glassy-table tr:nth-child(even) {
+        background-color: rgba(240, 240, 240, 0.6);
+    }
+
+    .glassy-table tr:hover {
+        background-color: rgba(224, 242, 255, 0.9);
+    }
+
+    .action-buttons a {
+        margin-right: 5px;
+        background-color: rgb(16, 168, 120);
+        color: aliceblue;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        text-decoration: none;
+    }
+
+    .top-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .top-buttons .btn {
+        background-color: rgb(16, 168, 120);
+        color: aliceblue;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 1rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        margin-top: 10px;
+    }
+
+    .top-buttons .btn:hover {
+        background-color: green;
+    }
+
+    @media (max-width: 768px) {
+        .glassy-table {
+            font-size: 0.9rem;
+            min-width: 600px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .glassy-table {
+            font-size: 0.85rem;
+            min-width: 500px;
+        }
+
+        .top-buttons {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .top-buttons .btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="container mt-4">
+    <h2 class="mb-4" style="text-align: center; color: rgb(16, 168, 120);">Procurement Records</h2>
+
+    <div class="top-buttons">
+        <a href="javascript:history.back()" class="btn">← Back</a>
+        <a href="{% url 'procurement_create' %}" class="btn">+ Add New Procurement</a>
+    </div>
+
+    <div class="glassy-table-wrapper">
+        <table class="glassy-table">
+            <thead>
+                <tr>
+                    <th>Produce</th>
+                    <th>Tonnage (kgs)</th>
+                    <th>Cost (UGX)</th>
+                    <th>Dealer Name</th>
+                    <th>Branch</th>
+                    <th>Contact</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for procurement in procurements %}
+                <tr>
+                    <td>{{ procurement.produce }}</td>
+                    <td>{{ procurement.tonnage_kgs }}</td>
+                    <td>{{ procurement.costUgx }}</td>
+                    <td>{{ procurement.dealername }}</td>
+                    <td>{{ procurement.branch }}</td>
+                    <td>{{ procurement.contact }}</td>
+                    <td>{{ procurement.date }}</td>
+                    <td>{{ procurement.time }}</td>
+                    <td class="action-buttons">
+                        <a href="{% url 'procurement_edit' procurement.id %}">Edit</a>
+                        <a href="{% url 'procurement_delete' procurement.id %}">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="text-center">No procurement records found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Form</title>
+</head>
+<body>
+    {% block content %}
+    <div class="container mt-3">
+        <div class="row mb-2">
+            <div class="col-12">
+                <button onclick="history.back()" class="btn btn-secondary">Back</button>
+            </div>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-header bg-primary text-white py-2">
+                        <h4 class="mb-0 text-center">Credit Form</h4>
+                    </div>
+                    <div class="card-body py-3">
+                        <form method="POST" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                {% for field in form %}
+                                    <div class="col-md-6 mb-2">
+                                        {{ field|as_crispy_field }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="mt-3 text-center">
+                                <input type="submit" value="Submit" class="btn btn-sm" style="background-color:  rgb(16, 168, 120); color: aliceblue;">
+                                <button type="submit" class="btn btn-sm ms-2" style="background-color:  rgb(16, 168, 120); color: aliceblue;">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-muted text-center py-1">
+                        <small>Credit Management System</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

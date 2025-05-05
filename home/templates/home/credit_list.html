@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="javascript:history.back()" class="btn btn-success">&larr; Back</a>
+        <h2 class="text-center flex-grow-1">Credit Sales List</h2> 
+        {% if user.is_manager or user.is_salesagent %}
+        <a href="{% url 'add_credit_sale' %}" class="btn btn-success">+ Add New Credit Sale</a>
+        {% endif %}
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-success">
+                <tr>
+                    <th>Produce</th>
+                    <th>Buyer Name</th>
+                    <th>NIN</th>
+                    <th>Quantity (kgs)</th>
+                    <th>Total Amount Due (UGX)</th>
+                    <th>Sales Agent</th>
+                    <th>Due Date</th>
+                    <th>Branch</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in credits %}
+                <tr>
+                    <td>{{ sale.produce }}</td>
+                    <td>{{ sale.buyer_name }}</td>
+                    <td>{{ sale.national_id }}</td>
+                    <td>{{ sale.tonnage_kgs }}</td>
+                    <td>{{ sale.amount_due_ugx }}</td>
+                    <td>{{ sale.sales_agent }}</td>
+                    <td>{{ sale.due_date }}</td>
+                    <td>{{ sale.branch }}</td>
+                    <td>
+                        <a href="{% url 'credit_detail' sale.pk %}" class="btn btn-outline-success btn-sm" style="background-color: rgb(16, 168, 120); color:aliceblue;">View</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="9" class="text-center">No credit sales found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

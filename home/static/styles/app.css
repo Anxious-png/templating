@@ -1,0 +1,254 @@
+body{
+    background-color: aliceblue;
+    font-family: sans-serif;
+}
+/* Base styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1d7215, #25ce8a);
+    min-height: 100vh;
+  }
+  
+  /* Main container styling */
+  .containerlogin {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 0;
+  }
+  
+  /* Glass effect container */
+  .glass {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px 16px 0 0;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Form container styling */
+  .containerlogin > .container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 0 0 16px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: none;
+    padding: 30px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Title styling */
+  h1 {
+    color: black !important;
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Input fields styling */
+  .form-control {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 12px;
+    color: #333;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+  }
+  
+  .form-control:focus {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgb(21, 206, 206);
+    box-shadow: 0 0 0 0.2rem rgba(128, 0, 32, 0.25);
+  }
+  
+  /* Label styling */
+  label {
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  /* Button styling */
+  .btn-info.btn_danger {
+    background-color: #0b8b09 !important;
+    border-color: #08630e !important;
+    color: white !important;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-info.btn_danger:hover {
+    background-color: #acd8d1 !important;
+    border-color: #c2b4b7 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .btn-info.btn_danger:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Crispy forms adjustments */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .containerlogin {
+      margin: 1rem;
+      max-width: 100%;
+    }
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.containerlogin {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+
+
+
+
+/*index page*/
+/* General Card Layout */
+.produce-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.produce-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 300px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.produce-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Produce Header */
+.produce-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.produce-header h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+}
+
+.produce-type {
+    font-size: 0.9rem;
+    color: #888;
+    font-style: italic;
+}
+
+/* Price and Stock Info */
+.produce-price {
+    margin-bottom: 15px;
+}
+
+.price-label {
+    font-weight: bold;
+    color: #333;
+}
+
+.price-value {
+    color: #28a745;
+    font-size: 1.2rem;
+}
+
+.stock-container {
+    margin-top: 20px;
+}
+
+.branch-stock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.branch-name {
+    font-weight: bold;
+    color: #555;
+}
+
+.stock-amount {
+    font-size: 1rem;
+    color: #333;
+    padding: 5px 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+.low-stock {
+    background-color: #ffcccc; /* Light red for low stock */
+    color: #d9534f;
+}
+
+/* Filter Section */
+.filters {
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filters select,
+.filters input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+.filters select {
+    width: 200px;
+}
+
+.filters input {
+    width: 250px;
+}
+
+/* Inventory Header */
+.inventory-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.inventory-header h1 {
+    font-size: 2.5rem;
+    color: #333;
+}
+
+.inventory-header p {
+    font-size: 1.2rem;
+    color: #666;
+}

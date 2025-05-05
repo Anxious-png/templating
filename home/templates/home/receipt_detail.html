@@ -1,0 +1,199 @@
+{% load static %}
+{% block title %}Receipt detail{% endblock %}
+{% block content %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @media print {
+            .no-print {
+                display: none;
+            }
+            body {
+                background-color: white !important;
+                font-family: sans-serif;
+            }
+            .receipt-card {
+                box-shadow: none !important;
+                margin: 0 !important;
+            }
+        }
+        
+        body {
+            font-family: sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .receipt-card {
+            max-width: 700px;
+            margin: 30px auto;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        
+        .receipt-header {
+            background-color:  rgb(16, 168, 120);
+            color: white;
+            padding: 15px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            text-align: center;
+        }
+        
+        .receipt-body {
+            padding: 20px;
+        }
+        
+        .receipt-footer {
+            padding: 15px;
+            background-color: #f2f2f2;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            text-align: center;
+        }
+        
+        .customer-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .customer-info div {
+            margin-bottom: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th {
+            background-color: #212529;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        
+        td:first-child {
+            text-align: left;
+        }
+        
+        .total-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-top: 20px;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            width: 50%;
+            padding: 5px 0;
+        }
+        
+        .total-row.grand-total {
+            font-weight: bold;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 5px;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-primary {
+            background-color: #0d6efd;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="receipt-card">
+            <div class="receipt-header">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" width="50" height="50">
+                <h2 class="mb-0">Karibu Grocery Ltd</h2>
+                <p class="mb-0">Receipt #{{ sale.id }}</p>
+            </div>
+            
+            <div class="receipt-body">
+                <h3 class="text-center mb-4">Order Summary</h3>
+                
+                <div class="customer-info">
+                    <div>
+                        <p><strong>Customer Name:</strong> {{ receipt.buyer_name }}</p>
+                        <p><strong>Branch:</strong> {{ receipt.branch }}</p>
+                    </div>
+                    <div>
+                        <p><strong>Date:</strong> {{ receipt.date }}</p>
+                        <p><strong>Time:</strong> {{ receipt.time }}</p>
+                    </div>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Quantity (kg)</th>
+                            <th>Price (UGX)</th>
+                            <th>Total (UGX)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ receipt.produce.name }}</td>
+                            <td>{{ receipt.quantity }}</td>
+                            <td>{{ receipt.price }}</td>
+                            <td>{{ receipt.get_total }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="total-section">
+                    <div class="total-row">
+                        <span><strong>Total Bill:</strong></span>
+                        <span>UGX {{ receipt.get_total }}</span>
+                    </div>
+                    <div class="total-row">
+                        <span><strong>Amount Paid:</strong></span>
+                        <span>UGX {{ receipt.amount_paid_ugx }}</span>
+                    </div>
+                    <div class="total-row">
+                        <span><strong>Change:</strong></span>
+                        <span>UGX {{ receipt.get_change }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="receipt-footer">
+                <p class="mb-0">Thank you for supporting Karibu Grocery!</p>
+                <p class="mb-0">Remember goods once sold are not returnable</p>
+            </div>
+        </div>
+        
+        <div class="buttons no-print">
+            <a href="{% url 'receipt' %}" class="btn btn-sm" style="background-color:  rgb(16, 168, 120); color: #f2f2f2;">Back to Receipts</a>
+            <button onclick="window.print()" class="btn btn-sm" style="background-color:  rgb(16, 168, 120); color: #f8f9fa;">Print Receipt</button>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
